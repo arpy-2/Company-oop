@@ -1,103 +1,130 @@
 package ies.tierno.org;
 
-import ies.tierno.org.Empresa.Models.Departamento;
-import ies.tierno.org.Empresa.Models.Empleado;
-import ies.tierno.org.Empresa.Models.Empresa;
-import ies.tierno.org.Empresa.Readers.EmpresaReader;
-
+import ies.tierno.org.Empresa.Models.*;
+import ies.tierno.org.Empresa.Readers.*;
 import java.util.Scanner;
 
 public class CompanyApp {
+    private Scanner scanner = new Scanner(System.in);
 
     public void run() {
-        Scanner sc = new Scanner(System.in);
+        System.out.println("EMPRESA");
+        Empresa empresa = EmpresaReader.readEmpresa(scanner);
 
-        // Crear empresa
-        Empresa empresa = EmpresaReader.readEmpresa(sc);
+        createData(empresa);
 
-        // Añadir departamentos y empleados de ejemplo
-        Departamento d1 = new Departamento("IT", 50000);
-        d1.addEmpleado(new Empleado("123A", "Juan", "Pérez", "Programador"));
-        d1.addEmpleado(new Empleado("456B", "Ana", "López", "Jefe de proyecto"));
-        empresa.addDepartamento(d1);
+        System.out.println("Datos creados:");
+        System.out.println("Departamentos: Desarrollo, Marketing, Recursos Humanos");
 
-        Departamento d2 = new Departamento("Marketing", 30000);
-        d2.addEmpleado(new Empleado("789C", "Luis", "Martín", "Analista"));
-        empresa.addDepartamento(d2);
-
-        // Menú
-        int opcion;
+        int option;
         do {
-            System.out.println("1. Mostrar datos de un departamento");
-            System.out.println("2. Mostrar empleados de un departamento");
-            System.out.println("3. Mostrar datos de un empleado en un departamento");
-            System.out.println("4. Salir");
-            System.out.print("Elige opción: ");
-            opcion = Integer.parseInt(sc.nextLine());
+            printMenu();
+            option = scanner.nextInt();
+            scanner.nextLine();
 
-            switch (opcion) {
-                case 1:
-                    System.out.print("Introduce nombre del departamento: ");
-                    String depName = sc.nextLine();
-                    Departamento dep = empresa.getDepartamentos().stream()
-                            .filter(d -> d.getNombre().equalsIgnoreCase(depName))
-                            .findFirst().orElse(null);
-                    if (dep == null) {
-                        System.out.println("No se encuentra el departamento");
-                    } else {
-                        System.out.println(dep);
-                    }
-                    break;
+            if (option == 1) printDepartamento(empresa);
+            else if (option == 2) printEmpleados(empresa);
+            else if (option == 3) findEmpleado(empresa);
+            else if (option == 4) System.out.println("Saliendo...");
+            else System.out.println("Opcion no valida");
 
-                case 2:
-                    System.out.print("Introduce nombre del departamento: ");
-                    depName = sc.nextLine();
-                    dep = empresa.getDepartamentos().stream()
-                            .filter(d -> d.getNombre().equalsIgnoreCase(depName))
-                            .findFirst().orElse(null);
-                    if (dep == null) {
-                        System.out.println("No se encuentra el departamento");
-                    } else {
-                        dep.getEmpleados().forEach(System.out::println);
-                    }
-                    break;
+        } while (option != 4);
+    }
 
-                case 3:
-                    System.out.print("Introduce nombre del departamento: ");
-                    depName = sc.nextLine();
-                    dep = empresa.getDepartamentos().stream()
-                            .filter(d -> d.getNombre().equalsIgnoreCase(depName))
-                            .findFirst().orElse(null);
-                    if (dep == null) {
-                        System.out.println("No existe el departamento");
-                    } else {
-                        System.out.print("Introduce NIF del empleado: ");
-                        String nif = sc.nextLine();
-                        Empleado emp = dep.getEmpleados().stream()
-                                .filter(e -> e.getNif().equalsIgnoreCase(nif))
-                                .findFirst().orElse(null);
-                        if (emp == null) {
-                            System.out.println("No se encuentra el empleado en el departamento");
-                        } else {
-                            System.out.println(emp);
-                        }
-                    }
-                    break;
+    private void createData(Empresa empresa) {
+        Departamento d1 = new Departamento("Desarrollo", 50000.0);
+        Departamento d2 = new Departamento("Marketing", 30000.0);
+        Departamento d3 = new Departamento("Recursos Humanos", 25000.0);
 
-                case 0:
-                    System.out.println("Saliendo...");
-                    break;
+        empresa.addDepartment(d1);
+        empresa.addDepartment(d2);
+        empresa.addDepartment(d3);
 
-                default:
-                    System.out.println("Opción no válida");
+        Empleado e1 = new Empleado("12345678A", "Juan", "Perez", "Programador");
+        Empleado e2 = new Empleado("87654321B", "Ana", "Lopez", "Jefe de Proyecto");
+        Empleado e3 = new Empleado("11223344C", "Carlos", "Garcia", "Programador");
+
+        Empleado e4 = new Empleado("44332211D", "Maria", "Martinez", "Marketing");
+        Empleado e5 = new Empleado("55667788E", "Luis", "Rodriguez", "Marketing");
+
+        Empleado e6 = new Empleado("99887766F", "Laura", "Sanchez", "Reclutadora");
+        Empleado e7 = new Empleado("66778899G", "Pedro", "Fernandez", "Formacion");
+
+        d1.addEmployee(e1);
+        d1.addEmployee(e2);
+        d1.addEmployee(e3);
+
+        d2.addEmployee(e4);
+        d2.addEmployee(e5);
+
+        d3.addEmployee(e6);
+        d3.addEmployee(e7);
+    }
+
+    private void printMenu() {
+        System.out.println("1. Ver departamento");
+        System.out.println("2. Ver empleados");
+        System.out.println("3. Buscar empleado");
+        System.out.println("4. Salir");
+        System.out.print("Elige una de las siguientes opciones: ");
+    }
+
+    private void printDepartamento(Empresa empresa) {
+        System.out.print("Departamento: ");
+        String nombre = scanner.nextLine();
+        Departamento d = empresa.findDepartment(nombre);
+
+        if (d == null) {
+            System.out.println("No se encuentra el departamento");
+        } else {
+            System.out.println("Nombre: " + d.getName());
+            System.out.println("Presupuesto: " + d.getBudget());
+            System.out.println("Empleados: " + d.getEmployeeCount());
+        }
+    }
+
+    private void printEmpleados(Empresa empresa) {
+        System.out.print("Departamento: ");
+        String nombre = scanner.nextLine();
+        Departamento d = empresa.findDepartment(nombre);
+
+        if (d == null) {
+            System.out.println("No se encuentra el departamento");
+            return;
+        }
+
+        Empleado[] empleados = d.getEmployees();
+        if (d.getEmployeeCount() == 0) {
+            System.out.println("No hay empleados");
+        } else {
+            for (int i = 0; i < d.getEmployeeCount(); i++) {
+                System.out.println(empleados[i]);
             }
-        } while (opcion != 0);
+        }
+    }
 
-        sc.close();
+    private void findEmpleado(Empresa empresa) {
+        System.out.print("Departamento: ");
+        String depto = scanner.nextLine();
+        Departamento d = empresa.findDepartment(depto);
+
+        if (d == null) {
+            System.out.println("No existe el departamento");
+            return;
+        }
+
+        System.out.print("NIF empleado: ");
+        String nif = scanner.nextLine();
+        Empleado e = d.findEmployee(nif);
+
+        if (e == null) {
+            System.out.println("No se encuentra el empleado en el departamento");
+        } else {
+            System.out.println(e);
+        }
     }
 
     public static void main(String[] args) {
         new CompanyApp().run();
     }
 }
-

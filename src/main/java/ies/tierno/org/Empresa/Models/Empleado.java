@@ -2,35 +2,32 @@ package ies.tierno.org.Empresa.Models;
 
 public class Empleado {
     private String nif;
-    private String nombre;
-    private String apellidos;
-    private String puesto;
+    private String name;
+    private String surname;
+    private String position;
 
-    public Empleado(String nif, String nombre, String apellidos, String puesto) {
+    public Empleado(String nif, String name, String surname, String position) {
         this.nif = nif;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.puesto = puesto;
+        this.name = name;
+        this.surname = surname;
+        this.position = position;
     }
 
     public String getNif() {
         return nif;
     }
-
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
-
-    public String getApellidos() {
-        return apellidos;
+    public String getSurname() {
+        return surname;
     }
-
-    public String getPuesto() {
-        return puesto;
+    public String getPosition() {
+        return position;
     }
 
     @Override
     public String toString() {
-        return "Empleado [NIF=" + nif + ", Nombre=" + nombre + " " + apellidos + ", Puesto=" + puesto + "]";
+        return name + " " + surname + " (" + nif + ") - " + position;
     }
 }

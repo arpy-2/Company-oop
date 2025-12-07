@@ -1,37 +1,44 @@
 package ies.tierno.org.Empresa.Models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Empresa {
-    private String nombre;
+    private String name;
     private String cif;
-    private List<Departamento> departamentos;
+    private Departamento[] departments;
+    private int departmentCount;
 
-    public Empresa(String nombre, String cif) {
-        this.nombre = nombre;
+    public Empresa(String name, String cif) {
+        this.name = name;
         this.cif = cif;
-        this.departamentos = new ArrayList<>();
+        this.departments = new Departamento[10];
+        this.departmentCount = 0;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
-
     public String getCif() {
         return cif;
     }
-
-    public List<Departamento> getDepartamentos() {
-        return departamentos;
+    public int getDepartmentCount() {
+        return departmentCount;
+    }
+    public Departamento[] getDepartments() {
+        return departments;
     }
 
-    public void addDepartamento(Departamento d) {
-        departamentos.add(d);
+    public void addDepartment(Departamento d) {
+        if (departmentCount < departments.length) {
+            departments[departmentCount] = d;
+            departmentCount++;
+        }
     }
 
-    @Override
-    public String toString() {
-        return "Empresa [Nombre=" + nombre + ", CIF=" + cif + ", Departamentos=" + departamentos.size() + "]";
+    public Departamento findDepartment(String name) {
+        for (int i = 0; i < departmentCount; i++) {
+            if (departments[i].getName().equalsIgnoreCase(name)) {
+                return departments[i];
+            }
+        }
+        return null;
     }
 }

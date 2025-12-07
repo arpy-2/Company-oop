@@ -1,17 +1,14 @@
 package ies.tierno.org.Empresa.Readers;
 
+import ies.tierno.org.Empresa.Models.Empresa;
 import java.util.Scanner;
-import ies.tierno.org.Empresa.Models.Empresa; // importa tu modelo
 
 public class EmpresaReader {
-    public static Empresa readEmpresa(Scanner sc) {
-        System.out.print("Introduce el nombre de la empresa: ");
-        String nombre = sc.nextLine();
-
-        System.out.print("Introduce el CIF de la empresa: ");
-        String cif = sc.nextLine();
-
-        // devolvemos un objeto Empresa, no EmpresaReader
-        return new Empresa(nombre, cif);
+    public static Empresa readEmpresa(Scanner scanner) {
+        System.out.print("Nombre de la empresa: ");
+        String name = scanner.nextLine();
+        System.out.print("CIF: ");
+        String cif = scanner.nextLine();
+        return new Empresa(name, cif);
     }
 }

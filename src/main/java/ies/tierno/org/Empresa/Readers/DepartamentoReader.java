@@ -1,16 +1,17 @@
 package ies.tierno.org.Empresa.Readers;
 
-import java.util.Scanner;
 import ies.tierno.org.Empresa.Models.Departamento;
+import java.util.Scanner;
 
 public class DepartamentoReader {
-    public static Departamento readDepartamento(Scanner sc) {
-        System.out.print("Introduce el nombre del departamento: ");
-        String nombre = sc.nextLine();
+    public static Departamento readDepartamento(Scanner scanner) {
+        System.out.print("Nombre del departamento: ");
+        String name = scanner.nextLine();
 
-        System.out.print("Introduce el presupuesto: ");
-        double presupuesto = Double.parseDouble(sc.nextLine());
+        System.out.print("Presupuesto: ");
+        double budget = scanner.nextDouble();
+        scanner.nextLine();
 
-        return new Departamento(nombre, presupuesto);
+        return new Departamento(name, budget);
     }
 }
